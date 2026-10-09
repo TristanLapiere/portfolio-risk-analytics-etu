@@ -6,7 +6,7 @@ from datetime import date
 from decimal import Decimal
 from pathlib import Path
 
-from portfolio_tracker import (
+from portfolio_risk_analytics.portfolio_tracker import (
     Position,
     PriceObservation,
     calculate_risk_metrics,
@@ -123,11 +123,15 @@ class PortfolioTrackerTests(unittest.TestCase):
         self.assertEqual(history[-1].closing_prices["AAA"], Decimal("102.00"))
 
     @unittest.skipUnless(
-        (Path(__file__).parent / "examples" / "real_market_case.csv").is_file(),
+        (Path(__file__).resolve().parents[1] / "examples" / "real_market_case.csv").is_file(),
         "Optional Yahoo Finance dataset is not included in the public source.",
     )
     def test_real_market_stress_case_loads_and_calculates(self) -> None:
-        real_case = Path(__file__).parent / "examples" / "real_market_case.csv"
+        real_case = (
+            Path(__file__).resolve().parents[1]
+            / "examples"
+            / "real_market_case.csv"
+        )
         positions, history = load_portfolio_data(real_case)
 
         self.assertEqual(

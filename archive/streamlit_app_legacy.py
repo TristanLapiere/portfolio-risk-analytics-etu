@@ -6,7 +6,7 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-from portfolio_tracker import (
+from portfolio_risk_analytics.portfolio_tracker import (
     calculate_risk_metrics,
     load_positions,
     load_price_history,

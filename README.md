@@ -17,23 +17,26 @@ limitations of every displayed metric, see the rendered
 [HTML guide](docs/GUIDE_METHODOLOGIQUE_FR.html). The editable Markdown source is
 [GUIDE_METHODOLOGIQUE_FR.md](docs/GUIDE_METHODOLOGIQUE_FR.md).
 To regenerate the PDF and HTML (with rendered equations), run
-`Rscript docs/render_guide.R` from this directory.
+`Rscript docs/render_guide.R` from the project root.
 
 ## Project layout
 
-- `portfolio_tracker.py` — CSV validation and quantitative calculations
-- `options_analytics.py` — Black–Scholes valuation and Greeks
-- `market_data.py` — on-demand Yahoo Finance chart-data retrieval
-- `streamlit_app.py` — interactive dashboard
-- `test_portfolio_tracker.py` — unit tests
-- `test_advanced_analytics.py` — option, adjusted-price and market-data tests
-- `requirements.txt` — dashboard dependencies
-- `examples/` — fictional sample input CSV
-- `examples/real_market_case.csv` — optional locally generated Yahoo Finance snapshot (not tracked)
-- `examples/REAL_MARKET_CASE.md` — sources, composition, interpretation and usage
-- `examples/fetch_real_market_data.py` — refresh the real-market CSV from Yahoo Finance
-- `docs/` — methodological guide source and rendered formats
-- `archive/` — retained copy of the earlier dashboard version
+```text
+.
+├── app/                         # Streamlit entry point
+├── src/portfolio_risk_analytics/ # Reusable analytics package
+├── tests/                       # Unit tests
+├── examples/                    # Sample input and data utilities
+├── docs/                        # Methodology guide and rendered versions
+├── archive/                     # Historical dashboard version
+├── .github/workflows/           # Continuous integration
+├── pyproject.toml               # Package metadata and dependencies
+└── requirements.txt             # Editable project install
+```
+
+The package separates portfolio calculations, options analytics and market
+data retrieval. `examples/real_market_case.csv` is generated locally and is not
+tracked in this public repository.
 
 ## One-file input format
 
@@ -114,7 +117,7 @@ From this directory:
 
 ```bash
 python3 -m pip install -r requirements.txt
-python3 -m streamlit run streamlit_app.py
+python3 -m streamlit run app/streamlit_app.py
 ```
 
 Open http://localhost:8501 and upload your CSV, choose the local real-market
@@ -123,13 +126,13 @@ case if generated, or fetch an adjusted history from Yahoo Finance.
 ## Run the command-line analysis
 
 ```bash
-python3 portfolio_tracker.py examples/sample_prices.csv --risk-free-rate 0.03
+python3 -m portfolio_risk_analytics.portfolio_tracker examples/sample_prices.csv --risk-free-rate 0.03
 ```
 
 ## Run the tests
 
 ```bash
-python3 -m unittest -v
+python3 -m unittest discover -s tests -v
 ```
 
 The synthetic example prices and assets are fictional.

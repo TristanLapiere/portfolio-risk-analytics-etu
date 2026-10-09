@@ -6,9 +6,9 @@ from decimal import Decimal
 from io import StringIO
 from unittest.mock import patch
 
-from market_data import fetch_yahoo_price_csv
-from options_analytics import black_scholes
-from portfolio_tracker import (
+from portfolio_risk_analytics.market_data import fetch_yahoo_price_csv
+from portfolio_risk_analytics.options_analytics import black_scholes
+from portfolio_risk_analytics.portfolio_tracker import (
     calculate_risk_metrics,
     load_portfolio_data,
     portfolio_total_return_values,
@@ -120,7 +120,7 @@ class YahooMarketDataTests(unittest.TestCase):
             }
         }
 
-        with patch("market_data.urlopen") as open_url:
+        with patch("portfolio_risk_analytics.market_data.urlopen") as open_url:
             open_url.return_value.__enter__.return_value = StringIO(
                 json.dumps(payload)
             )
@@ -137,7 +137,7 @@ class YahooMarketDataTests(unittest.TestCase):
         )
 
     def test_rejects_quantity_count_mismatch_before_request(self) -> None:
-        with patch("market_data.urlopen") as open_url:
+        with patch("portfolio_risk_analytics.market_data.urlopen") as open_url:
             with self.assertRaisesRegex(ValueError, "exactly one quantity"):
                 fetch_yahoo_price_csv(
                     ["AAA", "BBB"], [1], date(2025, 1, 1), date(2025, 1, 3)

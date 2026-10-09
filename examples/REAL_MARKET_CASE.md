@@ -42,7 +42,7 @@ or recommended investment portfolio.
 From the project directory:
 
 ```bash
-python3 -m streamlit run streamlit_app.py
+python3 -m streamlit run app/streamlit_app.py
 ```
 
 The dashboard's **Included real-market case** choice appears after you generate

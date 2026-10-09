@@ -7,15 +7,17 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-from market_data import fetch_yahoo_price_csv
-from options_analytics import black_scholes
-from portfolio_tracker import (
+from portfolio_risk_analytics.market_data import fetch_yahoo_price_csv
+from portfolio_risk_analytics.options_analytics import black_scholes
+from portfolio_risk_analytics.portfolio_tracker import (
     TRADING_DAYS_PER_YEAR,
     calculate_risk_metrics,
     load_portfolio_data,
     portfolio_total_return_values,
     summarize_portfolio,
 )
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 st.set_page_config(
@@ -182,7 +184,7 @@ with left_intro:
         "historical case, or request a price history from Yahoo Finance."
     )
 with right_upload:
-    sample_path = Path(__file__).resolve().parent / "examples" / "sample_prices.csv"
+    sample_path = PROJECT_ROOT / "examples" / "sample_prices.csv"
     st.download_button(
         "Download synthetic example",
         data=sample_path.read_bytes(),
@@ -191,7 +193,7 @@ with right_upload:
         width="stretch",
     )
 
-real_case_path = Path(__file__).resolve().parent / "examples" / "real_market_case.csv"
+real_case_path = PROJECT_ROOT / "examples" / "real_market_case.csv"
 data_sources = ["Upload CSV"]
 if real_case_path.is_file():
     data_sources.append("Included real-market case")
